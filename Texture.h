@@ -18,6 +18,7 @@ public:
 
 	void draw(float alpha);
 	void scale(float x);
+	void Scale(float x);
 	void setPos(float x, float y);
 
 
@@ -26,6 +27,14 @@ public:
 private:
 	float PosX;
 	float PosY;
+
+	glm::vec2 vertex1[4]{
+		glm::vec2(-1,-1),
+		glm::vec2(1,-1),
+		glm::vec2(1,1),
+		glm::vec2(-1,1),
+	};
+
 
 	unsigned int texture;
 	unsigned char* data;

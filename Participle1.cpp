@@ -14,9 +14,50 @@ void DisableOpenGL(HWND, HDC, HGLRC);
 
 double x(0), y(0), z(0);
 float t = 0.1f; 
+int angle = 0; 
+
+struct {
+    float speed = 0.15f;
+    float x;
+    float y;
+    
+} spaceShip;
+
+
+Dot* dt;
 
 
 
+
+
+
+
+
+std::vector<Texture*> bullets;
+
+
+    
+void Shoot() {
+    Texture* bullet = new Texture("bullet.png");
+    bullet->setPos(dt->m_x, dt->m_y);
+    bullet->Scale(0.01f);
+    bullets.push_back(bullet);
+}   
+
+
+
+
+
+
+
+
+
+void move() {
+
+    if (GetKeyState('R') < 0)
+        Shoot();
+
+}
 
 int WINAPI WinMain(HINSTANCE hInstance,
     HINSTANCE hPrevInstance,
@@ -58,8 +99,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT,
         CW_USEDEFAULT,
-        800,
-        800,
+        1300,
+        1300,
         NULL,
         NULL,
         hInstance,
@@ -71,9 +112,12 @@ int WINAPI WinMain(HINSTANCE hInstance,
     EnableOpenGL(hwnd, &hDC, &hRC);
  
 
-    
-    Dot* dt = new Dot();
+    Texture* background = new Texture("bg.png");
+ 
+    dt = new Dot();
 
+
+    gladLoadGL();
     
     /* program main loop */
     while (!bQuit)
@@ -94,19 +138,47 @@ int WINAPI WinMain(HINSTANCE hInstance,
         }
         else
         {
-            /* OpenGL animation code goes here */
-            gladLoadGL();
+
+        
             glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
             glClear(GL_COLOR_BUFFER_BIT);
+            glLoadIdentity(); 
+            glScalef(0.4f, 0.4f, 1);
+
+            glPushMatrix();
+            move();
+            for (int i = 0; i < bullets.size(); i++) {
+
+                float y = bullets[i]->getPos().y;
+
+                bullets[i]->setPos(dt->m_x, y += 0.09f);
+                bullets[i]->Scale(0.01f);
+                bullets[i]->draw(1);
+                if (bullets[i]->getPos().y > 2) {
+                    delete bullets[i];
+                    bullets.erase(bullets.begin() + i);
+                    bullets.shrink_to_fit();
+                }
+
+            }
+            glPopMatrix();  
          
         
+
             srand(time(NULL));
-            dt->draw();
-            dt->move(); 
-        
+            
+            glPushMatrix(); 
+                dt->draw();
+                dt->move(); 
+            glPopMatrix();
+            //background->draw(1);
+           
+         
 
-
+                
+      
             SwapBuffers(hDC);
+     
 
             theta += 1.0f;
             Sleep(1);

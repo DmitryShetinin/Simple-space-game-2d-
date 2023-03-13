@@ -9,9 +9,10 @@ public:
     Particle(float aX, float aY);
     ~Particle(); 
     
-    void draw(float alpha, std::vector<Texture*> &s_textures);
+    void draw(float alpha, std::vector<Texture*> &s_textures, float angle);
     void reInt(float aX, float aY);
     bool is_dead();
+   
 
     float m_alpha{ 1.00f };
 

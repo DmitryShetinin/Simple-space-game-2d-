@@ -7,16 +7,8 @@
 
 
 float texCoord[] = { 0,1, 1,1, 1,0, 0,0 };
-float vertexMap[] = { -1,-1,  1,-1,  1,1,-1,1 };
 
 
-
-glm::vec2 vertex1[4] {
-    glm::vec2(-1,-1),
-    glm::vec2(1,-1),
-    glm::vec2(1,1),
-    glm::vec2(-1,1),
-};
 
 
 
@@ -70,6 +62,7 @@ void Texture::draw(float alpha) {
         glDisableClientState(GL_VERTEX_ARRAY);
     glPopMatrix();
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 }
 
 
@@ -77,6 +70,8 @@ void Texture::setPos(float x, float y) {
     this->PosX = x;
     this->PosY = y;
 }
+
+
 
 
 
@@ -93,4 +88,13 @@ void Texture::scale(float x)
     vertex1[1] = glm::vec2(PosX - x, PosY - x);
     vertex1[2] = glm::vec2(PosX - x, PosY + x);
     vertex1[3] = glm::vec2(PosX + x, PosY + x);
+}
+
+
+void Texture::Scale(float x)
+{
+    vertex1[0] = glm::vec2(PosX + x, PosY - x - 0.2f);
+    vertex1[1] = glm::vec2(PosX - x, PosY - x - 0.2f);
+    vertex1[2] = glm::vec2(PosX - x, PosY);
+    vertex1[3] = glm::vec2(PosX + x, PosY);
 }
